@@ -17,6 +17,7 @@ $(document).ready(function () {
     ) {
         let request = $("#table-request").DataTable({
             dom: "Bfrtip",
+            order: [[0, "desc"]],
             lengthChange: false,
             responsive: true,
             buttons: [
@@ -41,6 +42,7 @@ $(document).ready(function () {
         let my_request = $("#table-my-request").DataTable({
             lengthChange: false,
             dom: "Bfrtip",
+            order: [[0, "desc"]],
             responsive: true,
             buttons: [
                 {

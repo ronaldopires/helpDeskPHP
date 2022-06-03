@@ -5,34 +5,33 @@
 <main>
   <div class="container content-main">
     <div class="row g-0 content-request">
-      <h3 class="titles">Novo Chamado <i class="bi bi-plus-circle"></i></h3>
-      <br /><small class="text-muted">Crie um novo chamado</small>
-      <div class="col-md-12 mt-5">
-        <form class="row g-3" action="" method="post" name="create-request">
-          <div class="col-md-3">
-            <label for="date-start" class="form-label">Data de Abertura *</label>
-            <input type="date" class="form-control" id="date-start" name="date-start" required />
+      <div class="col-md-12">
+        <h1 class="titles">Novo Chamado <i class="bi bi-plus-circle"></i></h1>
+        <small class="text-muted">Crie um novo chamado</small>
+      </div>
+      <div class="col-md-12 mt-3">
+        <form class="row g-3" action="/novo-chamado" method="post" enctype="multipart/form-data">
+          @csrf
+          <div class="col-md-5">
+            <label for="created_by" class="form-label">Criado Por</label>
+            <input type="text" class="form-control" id="created_by" name="created_by" value="" />
           </div>
-          <div class="col-md-6">
-            <label for="user" class="form-label">Criado Por</label>
-            <input type="text" class="form-control" id="user" name="user" value="" disabled readonly />
-          </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label for="status" class="form-label">Status *</label>
             <select class="form-select" aria-label="Status" id="status" name="status" required>
               <option selected disabled>Selecione...</option>
-              <option value="new">Novo</option>
-              <option value="attendance">Em Atendimento</option>
-              <option value="closed">Encerrado</option>
+              <option value="Novo">Novo</option>
+              <option value="Em Atendimento">Em Atendimento</option>
+              <option value="Encerrado">Encerrado</option>
             </select>
           </div>
-          <div class="col-md-3">
-            <label for="request" class="form-label">Origem da Requisição *</label>
-            <select class="form-select" aria-label="request" id="request" name="request" required>
+          <div class="col-md-2">
+            <label for="origin_of_requisition" class="form-label">Origem da Requisição *</label>
+            <select class="form-select" aria-label="request" id="origin_of_requisition" name="origin_of_requisition" required>
               <option selected disabled>Selecione...</option>
-              <option value="phone">Telefone</option>
-              <option value="email-contact">E-mail</option>
-              <option value="helpdesk">Help Desk</option>
+              <option value="Telefone">Telefone</option>
+              <option value="E-mail">E-mail</option>
+              <option value="Help Desk">Help Desk</option>
             </select>
           </div>
           <div class="col-md-3">
@@ -71,27 +70,27 @@
             </select>
           </div>
           <div class="col-md-2">
-            <label for="ramal" class="form-label">Ramal</label>
-            <input type="number" class="form-control" id="ramal" name="ramal" min="0" />
+            <label for="branch_line" class="form-label">Ramal</label>
+            <input type="number" class="form-control" id="branch_line" name="branch_line" min="0" />
           </div>
           <div class="col-md-2">
-            <label for="localization" class="form-label">Localização *</label>
-            <select id="localization" class="form-select" name="localization" required>
+            <label for="location" class="form-label">Localização *</label>
+            <select id="location" class="form-select" name="location" required>
               <option selected>Selecione...</option>
-              <option value="frente">Frente</option>
-              <option value="fundos">Fundos</option>
-              <option value="sala-reuniao">Sala de Reunião</option>
+              <option value="Frente">Frente</option>
+              <option value="Fundos">Fundos</option>
+              <option value="Sala de Reunião">Sala de Reunião</option>
             </select>
           </div>
-          <div class="col-md-4">
-            <label for="client" class="form-label">Solicitante *</label>
-            <input type="text" class="form-control" id="client" name="client" />
+          <div class="col-md-6">
+            <label for="requester" class="form-label">Solicitante *</label>
+            <input type="text" class="form-control" id="requester" name="requester" />
           </div>
           <div class="col-md-4">
-            <label for="client-email" class="form-label">E-mail do Solicitante</label>
-            <input type="email" class="form-control" id="client-email" name="client-email" />
+            <label for="requester_email" class="form-label">E-mail do Solicitante</label>
+            <input type="email" class="form-control" id="requester_email" name="requester_email" />
           </div>
-          <div class="col-md-2">
+          <div class="col-md-6">
             <label for="problem" class="form-label">Tipo do Problema *</label>
             <input type="txt" class="form-control" id="problem" name="problem" required />
           </div>
@@ -99,19 +98,18 @@
             <label for="priority" class="form-label">Prioridade *</label>
             <select id="priority" class="form-select" name="priority" required>
               <option selected>Selecione...</option>
-              <option value="baixa">Baixa</option>
-              <option value="media">Média</option>
-              <option value="alta">Alta</option>
-              <option value="urgente">Urgente</option>
+              <option value="Baixa">Baixa</option>
+              <option value="Média">Média</option>
+              <option value="Alta">Alta</option>
+              <option value="Urgente">Urgente</option>
             </select>
           </div>
           <div class="col-md-12">
-            <label for="comments" class="form-label">Observações *</label>
-            <textarea rows="5" class="form-control" aria-label="With textarea" id="comments" name="comments"
-              required></textarea>
+            <label for="observation" class="form-label">Observações *</label>
+            <textarea rows="5" class="form-control" aria-label="With textarea" id="observation" name="observation" placeholder="Descreva o problema" required></textarea>
           </div>
           <div class="col-md-12">
-            <input type="file" class="form-control" id="file" name="file" />
+            <input type="file" class="form-control" id="file" name="image" />
           </div>
           <div class="col-12">
             <button type="submit" class="btn btn-success" id="btn-send">

@@ -8,6 +8,8 @@ $(document).ready(function () {
     }
 
     if (window.location.href.toString().split(window.location.host)[1] == "/") {
+        const dataYear = $("#requestYear").val();
+        console.log(dataYear);
         const ticketsForDay = document
             .getElementById("tickets-for-day")
             .getContext("2d");

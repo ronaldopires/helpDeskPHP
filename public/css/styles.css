@@ -92,7 +92,9 @@ nav ul li a.nav-link,
 nav a {
     color: var(--bs-light) !important;
 }
-
+.toast-container{
+    z-index: 1000;
+}
 /* Index */
 .container {
     font: 400 1rem var(--body-font);

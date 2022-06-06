@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('list_requests', function (Blueprint $table) {
             $table->id();
@@ -37,7 +37,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('requests');
     }

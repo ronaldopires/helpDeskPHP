@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ListRequest;
+use App\Models\User;
 
 class RequestController extends Controller
 {
 
     public function index()
     {
+        $users_status_on = User::where('status', 1)->count();
+        $users_status_off = User::where('status', 0)->count();
+        $users = User::All()->count();
+
         $data = ListRequest::selectRaw(ListRequest::raw('MONTHNAME(created_at) as Mes, count(id) as Chamados'))->whereBetween(ListRequest::raw('MONTH(created_at)'), [1, 12])->groupBy(ListRequest::raw('MONTHNAME(created_at)'))->orderBy('created_at')->get();
         $requestYear = json_decode($data, true);
 
@@ -29,11 +34,15 @@ class RequestController extends Controller
             'requestNew' => $requestNew,
             'attendance' => $attendance,
             'closed' => $closed,
-            'requestYear' => $requestYear
+            'requestYear' => $requestYear,
+            'active' => $users_status_on,
+            'inactive' => $users_status_off,
+            'totalusers' => $users
         ]);
     }
     public function create()
     {
+        // $departments = ;
         $user = auth()->user();
         $users = ListRequest::select('requester')->get();
         return view('requests.create', ['user' => $user->name, 'users' => $users]);
@@ -46,16 +55,19 @@ class RequestController extends Controller
     public function show($id)
     {
         if (RequestController::verifyIsNumber($id)) {
-            $user = auth()->user();
             $request = ListRequest::findOrFail($id);
-            return view('requests.show', ['request' => $request, 'user' => $user->name]);
+            return view('requests.show', ['request' => $request]);
         } else {
             return redirect('/chamados')->with('error', 'Chamado não encontrado!');
         }
     }
     public function myRequests()
     {
-        return view('requests.my-requests');
+        $user = auth()->user();
+        $requests = ListRequest::where('user_id', $user->id)->get();
+        return view('requests.my-requests', [
+            'requests' => $requests
+        ]);
     }
     public function profile()
     {
@@ -73,10 +85,7 @@ class RequestController extends Controller
     {
         return view('login');
     }
-    public function config()
-    {
-        return view('layouts.config');
-    }
+
     public function store(Request $request)
     {
 

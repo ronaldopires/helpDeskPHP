@@ -23,18 +23,79 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><a href="/chamado/5">5</a></td>
-                                <td>Regislany Ribeiro</td>
-                                <td>Não assina no sisdoc</td>
-                                <td>Novo <a class="text-primary float-end" href="/chamado/status/">
-                                        <ion-icon name="create-outline" title="Editar Status"></ion-icon>
-                                    </a></td>
-                                <td>SECRETARIA EXECUTIVA</td>
-                                <td>7º</td>
-                                <td>2256</td>
-                                <td>Fundos</td>
-                            </tr>
+                            @foreach ($requests as $request)
+                                <tr class="text-center align-middle">
+                                    <td><a class="nav-link"
+                                            href="/chamado/{{ $request->id }}">{{ $request->id }}</a>
+                                    </td>
+                                    <td>{{ $request->requester }}</td>
+                                    <td>{{ $request->problem }}</td>
+                                    <td>{{ $request->status }}
+                                        <button type="button" class="btn text-primary float-end" data-bs-toggle="modal"
+                                            data-bs-target="#status{{ $request->id }}">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </button>
+                                        <a class="text-primary float-end nav-link"
+                                            href="/chamado/status/{{ $request->id }}">
+
+                                        </a>
+                                        <!-- Modal status -->
+                                        <div class="modal fade" id="status{{ $request->id }}" tabindex="-1"
+                                            aria-labelledby="status{{ $request->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="status{{ $request->id }}">Chmado
+                                                            ID: {{ $request->id }}
+                                                        </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Alterar Status do Chamado ?</p>
+                                                        <div class="col-md-10 mx-auto">
+                                                            <form action="/chamado/status/{{ $request->id }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="col-md-12 mb-3">
+                                                                    <label for="status" class="form-label">Status
+                                                                        *</label>
+                                                                    <select class="form-select" aria-label="Status"
+                                                                        id="status" name="status" required>
+                                                                        <option selected disabled>{{ $request->status }}
+                                                                        </option>
+                                                                        <option value="Novo">Novo</option>
+                                                                        <option value="Em Atendimento">Em Atendimento
+                                                                        </option>
+                                                                        <option value="Encerrado">Encerrado</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-12 text-center">
+                                                                    <button type="submit"
+                                                                        class="btn btn-success">Salvar</button>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Fechar</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ $request->department }}</td>
+                                    <td>{{ $request->floor }}</td>
+                                    <td>
+                                        @if ($request->branch_line)
+                                            {{ $request->branch_line }}
+                                        @else
+                                            Não registrado
+                                        @endif
+                                    </td>
+                                    <td>{{ $request->location }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                         <tfoot>
                             <tr>

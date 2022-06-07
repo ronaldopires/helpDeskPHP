@@ -13,12 +13,21 @@
                     <form class="row g-3 needs-validation" novalidate action="/novo-chamado" method="post"
                         enctype="multipart/form-data">
                         @csrf
-                        <div class="col-md-5">
-                            <label for="created_by" class="form-label">Criado Por</label>
-                            <input type="text" class="form-control" id="created_by" name="created_by"
-                                value="{{ $user }}" readonly disabled />
+                        <div class="col-md-6">
+                            <label for="requester" class="form-label">Solicitante *</label>
+                            <input type="text" class="form-control" id="requester" name="requester" list="datalistOptions"
+                                id="exampleDataList" required placeholder="Quem está com o problema?" 
+                                value="{{$user}}"/>
+                            <datalist id="datalistOptions">
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->requester }}">
+                                @endforeach
+                            </datalist>
+                            <div class="invalid-feedback">
+                                Essa informação é importante
+                            </div>
                         </div>
-                        <div class="col-md-2 has-validation">
+                        <div class="col-md-3">
                             <label for="status" class="form-label">Status *</label>
                             <select class="form-select" aria-label="status" id="status" name="status"
                                 required="required">
@@ -31,7 +40,7 @@
                                 Selecione o status
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="origin_of_requisition" class="form-label">Origem da Requisição *</label>
                             <select class="form-select" aria-label="request" id="origin_of_requisition"
                                 name="origin_of_requisition" required="required">
@@ -44,7 +53,7 @@
                                 Selecione a origem
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label for="department" class="form-label">Departamento *</label>
                             <select class="form-select" aria-label="department" id="department" name="department"
                                 required>
@@ -103,19 +112,7 @@
                                 Selecione a localização
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="requester" class="form-label">Solicitante *</label>
-                            <input type="text" class="form-control" id="requester" name="requester" list="datalistOptions"
-                                id="exampleDataList" required placeholder="Quem está com o problema?" />
-                            <datalist id="datalistOptions">
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->requester }}">
-                                @endforeach
-                            </datalist>
-                            <div class="invalid-feedback">
-                                Essa informação é importante
-                            </div>
-                        </div>
+                        
                         <div class="col-md-4">
                             <label for="requester_email" class="form-label">E-mail do Solicitante</label>
                             <input type="email" class="form-control" id="requester_email" name="requester_email"
@@ -150,7 +147,7 @@
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-success" id="btn-send">
-                                Criar chamado
+                                Criar
                             </button>
                             <button type="reset" class="btn btn-danger" id="btn-send">
                                 Limpar

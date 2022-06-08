@@ -14,7 +14,7 @@
           <div class="card">
             <div class="card-header text-end">Chamados Hoje</div>
             <div class="card-body">
-              <p class="card-numbers">{{ $requestDay }}</p>
+              <p class="card-numbers">{{ $ticketsDay }}</p>
             </div>
             <div class="card-footer text-center">
               <p class="card-text">
@@ -27,7 +27,7 @@
           <div class="card">
             <div class="card-header text-end">Novos</div>
             <div class="card-body">
-              <p class="card-numbers">{{ $requestNew }}</p>
+              <p class="card-numbers">{{ $ticketsNew }}</p>
             </div>
             <div class="card-footer text-center">
               <p class="card-text">
@@ -40,7 +40,7 @@
           <div class="card">
             <div class="card-header text-end">Em Atendimento</div>
             <div class="card-body">
-              <p class="card-numbers">{{ $attendance }}</p>
+              <p class="card-numbers">{{ $ticketsAttendance }}</p>
             </div>
             <div class="card-footer text-center">
               <p class="card-text">
@@ -53,7 +53,7 @@
           <div class="card">
             <div class="card-header text-end">Encerrados</div>
             <div class="card-body">
-              <p class="card-numbers">{{ $closed }}</p>
+              <p class="card-numbers">{{ $ticketsClosed }}</p>
             </div>
             <div class="card-footer text-center">
               <p class="card-text">
@@ -84,7 +84,7 @@
           <div class="card">
             <div class="card-header text-end">Ativos</div>
             <div class="card-body">
-              <p class="card-numbers">{{$active}}</p>
+              <p class="card-numbers">{{$users_active}}</p>
             </div>
             <div class="card-footer text-center">
               <p class="card-text">
@@ -97,7 +97,7 @@
           <div class="card">
             <div class="card-header text-end">Inativo</div>
             <div class="card-body">
-              <p class="card-numbers">{{$inactive}}</p>
+              <p class="card-numbers">{{$users_inactive}}</p>
             </div>
             <div class="card-footer text-center">
               <p class="card-text">

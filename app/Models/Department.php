@@ -11,8 +11,8 @@ class Department extends Model
 
   protected $guarded = [];
 
-  // public function request()
-  // {
-  //   return $this->belongsTo('App\Models\ListRequest');
-  // }
+  public function ticket()
+  {
+    return $this->belongsTo('App\Models\Ticket');
+  }
 }

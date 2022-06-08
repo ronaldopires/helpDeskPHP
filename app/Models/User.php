@@ -59,7 +59,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function requests()
+    public function ticket()
     {
         return $this->hasMany('App\Models\User');
     }

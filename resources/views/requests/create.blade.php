@@ -16,8 +16,8 @@
                         <div class="col-md-6">
                             <label for="requester" class="form-label">Solicitante *</label>
                             <input type="text" class="form-control" id="requester" name="requester" list="datalistOptions"
-                                id="exampleDataList" required placeholder="Quem está com o problema?" 
-                                value="{{$user}}"/>
+                                id="exampleDataList" required placeholder="Quem está com o problema?"
+                                value="{{ $user }}" />
                             <datalist id="datalistOptions">
                                 @foreach ($users as $user)
                                     <option value="{{ $user->requester }}">
@@ -58,20 +58,10 @@
                             <select class="form-select" aria-label="department" id="department" name="department"
                                 required>
                                 <option value="">Selecione...</option>
-                                <option value="DRI">DRI</option>
-                                <option value="SANEAMENTO">SANEAMENTO</option>
-                                <option value="ELETRICA">ELÉTRICA</option>
-                                <option value="GAS">GÁS</option>
-                                <option value="SECRETARIA-EXECUTIVA">SECRETARIA EXECUTIVA</option>
-                                <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
-                                <option value="FINANCEIRO">FINANCEIRO</option>
-                                <option value="ECONOMICO-FINANCEIRO">ECONÔMICO FINANCEIRO</option>
-                                <option value="RH">RH</option>
-                                <option value="TI">TI</option>
-                                <option value="MANUTENCAO">MANUTENÇÃO</option>
-                                <option value="SEGURANCA">SEGURANÇA</option>
-                                <option value="RECEPCAO">RECEPÇÃO</option>
-                                <option value="OUTROS">OUTROS</option>
+                                @foreach ($departaments as $departament)
+                                    <option value="{{ $departament->name }}">{{ $departament->name }}</option>
+                                @endforeach
+
                             </select>
                             <div class="invalid-feedback">
                                 Qual é o departamento?
@@ -81,15 +71,9 @@
                             <label for="floor" class="form-label">Andar *</label>
                             <select class="form-select" aria-label="floor" id="floor" name="floor" required>
                                 <option value="">Selecione...</option>
-                                <option value="1">1º</option>
-                                <option value="2">2º</option>
-                                <option value="3">3º</option>
-                                <option value="4">4º</option>
-                                <option value="5">5º</option>
-                                <option value="6">6º</option>
-                                <option value="7">7º</option>
-                                <option value="S1">S1º</option>
-                                <option value="S2">S2º</option>
+                                @foreach ($departaments as $departament)
+                                    <option value="{{ $departament->floor }}">{{ $departament->floor }}</option>
+                                @endforeach
                             </select>
                             <div class="invalid-feedback">
                                 Selecione o andar
@@ -112,7 +96,7 @@
                                 Selecione a localização
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <label for="requester_email" class="form-label">E-mail do Solicitante</label>
                             <input type="email" class="form-control" id="requester_email" name="requester_email"
@@ -139,8 +123,7 @@
                         <div class="col-md-12">
                             <label for="observation" class="form-label">Observações *</label>
                             <textarea rows="5" class="form-control" aria-label="With textarea" id="observation" name="observation"
-                                placeholder="Descreva melhor o problema" minlength="5" maxlength="10000"
-                                required></textarea>
+                                placeholder="Descreva melhor o problema" minlength="5" maxlength="10000" required></textarea>
                         </div>
                         <div class="col-md-12">
                             <input type="file" class="form-control" id="file" name="image" />

@@ -20,7 +20,9 @@
                                 <th>Andar</th>
                                 <th>Ramal</th>
                                 <th>Localização</th>
-                                <th>Atribuir</th>
+                                @auth
+                                    <th>Atribuir</th>
+                                @endauth
                             </tr>
                         </thead>
                         <tbody>
@@ -35,12 +37,14 @@
                                     <td>{{ $request->floor }}º</td>
                                     <td>{{ $request->branch_line }}</td>
                                     <td>{{ $request->location }}</td>
-                                    <td>
-                                        <a class="nav-link text-success" href="/add-request/{{ $request->id }}"
-                                            title="Adicionar">
-                                            <ion-icon name="add-circle-outline"></ion-icon>
-                                        </a>
-                                    </td>
+                                    @auth
+                                        <td>
+                                            <a class="nav-link text-success" href="/chamado/adicionar/{{ $request->id }}"
+                                                title="Adicionar">
+                                                <ion-icon name="add-circle-outline"></ion-icon>
+                                            </a>
+                                        </td>
+                                    @endauth
                                 </tr>
                             @endforeach
                         </tbody>
@@ -54,7 +58,9 @@
                                 <th>Andar</th>
                                 <th>Ramal</th>
                                 <th>Localização</th>
-                                <th>Obter Chamado</th>
+                                @auth
+                                    <th>Obter Chamado</th>
+                                @endauth
                             </tr>
                         </tfoot>
                     </table>

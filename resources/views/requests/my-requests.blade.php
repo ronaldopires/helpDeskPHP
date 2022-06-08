@@ -30,19 +30,15 @@
                                     </td>
                                     <td>{{ $request->requester }}</td>
                                     <td>{{ $request->problem }}</td>
-                                    <td>{{ $request->status }}
+                                    <td><span>{{ $request->status }}</span>
                                         <button type="button" class="btn text-primary float-end" data-bs-toggle="modal"
                                             data-bs-target="#status{{ $request->id }}">
                                             <ion-icon name="create-outline"></ion-icon>
                                         </button>
-                                        <a class="text-primary float-end nav-link"
-                                            href="/chamado/status/{{ $request->id }}">
-
-                                        </a>
                                         <!-- Modal status -->
                                         <div class="modal fade" id="status{{ $request->id }}" tabindex="-1"
                                             aria-labelledby="status{{ $request->id }}" aria-hidden="true">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="status{{ $request->id }}">Chmado
@@ -59,8 +55,8 @@
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="col-md-12 mb-3">
-                                                                    <label for="status" class="form-label">Status
-                                                                        *</label>
+                                                                    <label for="status"
+                                                                        class="form-label">Status*</label>
                                                                     <select class="form-select" aria-label="Status"
                                                                         id="status" name="status" required>
                                                                         <option selected disabled>{{ $request->status }}

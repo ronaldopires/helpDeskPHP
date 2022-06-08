@@ -4,18 +4,19 @@ date_default_timezone_set('America/Sao_Paulo');
 
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RequestController;
+use App\Http\Controllers\TicketController;
 use App\Models\Department;
 
-Route::get('/', [RequestController::class, 'index']);
-//Requests
-Route::get('/novo-chamado', [RequestController::class, 'create'])->middleware('auth');
-Route::get('/chamados', [RequestController::class, 'requests']);
-Route::get('/chamado/{id}', [RequestController::class, 'show']);
-Route::get('/add-request/{id}', [RequestController::class, 'addRequest'])->middleware('auth');
-Route::get('/meus-chamados', [RequestController::class, 'myRequests'])->middleware('auth');
-Route::post('/novo-chamado', [RequestController::class, 'store'])->middleware('auth');
-Route::put('/chamado/update/{id}', [RequestController::class, 'update'])->middleware('auth');
+Route::get('/', [TicketController::class, 'index']);
+
+//Tickets
+Route::get('/novo-chamado', [TicketController::class, 'create'])->middleware('auth');
+Route::post('/novo-chamado', [TicketController::class, 'store'])->middleware('auth');
+
+Route::get('/chamados', [TicketController::class, 'requests']);
+Route::get('/meus-chamados', [TicketController::class, 'myRequests'])->middleware('auth');
+Route::get('/chamado/{id}', [TicketController::class, 'show']);
+Route::put('/chamado/editar/{id}', [TicketController::class, 'update'])->middleware('auth');
 
 //Department
 Route::get('/departamentos', [DepartmentController::class, 'show'])->middleware('auth');
@@ -24,10 +25,7 @@ Route::get('/departamento/editar/{id}', [DepartmentController::class, 'edit'])->
 Route::put('/departamento/editar/{id}', [DepartmentController::class, 'update'])->middleware('auth');
 Route::delete('/departamento/excluir/{id}', [DepartmentController::class, 'destroy'])->middleware('auth');
 
-
-
-Route::get('/meu-perfil', [RequestController::class, 'profile'])->middleware('auth');
-Route::get('/ajuda', [RequestController::class, 'help']);
+Route::get('/ajuda', [TicketController::class, 'help']);
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

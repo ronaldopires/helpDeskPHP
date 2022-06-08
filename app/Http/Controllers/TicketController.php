@@ -2,61 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
-use App\Models\ListRequest;
+use App\Models\Ticket;
 use App\Models\User;
 
-class RequestController extends Controller
+class TicketController extends Controller
 {
 
     public function index()
     {
-        $users_status_on = User::where('status', 1)->count();
-        $users_status_off = User::where('status', 0)->count();
+        $users_active = User::where('status', 1)->count();
+        $users_inactive = User::where('status', 0)->count();
         $users = User::All()->count();
 
-        $data = ListRequest::selectRaw(ListRequest::raw('MONTHNAME(created_at) as Mes, count(id) as Chamados'))->whereBetween(ListRequest::raw('MONTH(created_at)'), [1, 12])->groupBy(ListRequest::raw('MONTHNAME(created_at)'))->orderBy('created_at')->get();
-        $requestYear = json_decode($data, true);
+        $data = Ticket::selectRaw(Ticket::raw('MONTHNAME(created_at) as Mes, count(id) as Chamados'))->whereBetween(Ticket::raw('MONTH(created_at)'), [1, 12])->groupBy(Ticket::raw('MONTHNAME(created_at)'))->orderBy('created_at')->get();
+        $ticketsYear = json_decode($data, true);
 
-        $requestDay = ListRequest::where('created_at', '>=', date('Y-m-d'))->count();
+        $ticketsDay = Ticket::where('created_at', '>=', date('Y-m-d'))->count();
 
-        $requestNew = ListRequest::where('status', 'like', '%novo%')->count();
+        $ticketsNew = Ticket::where('status', 'like', '%novo%')->count();
 
-        $attendance = ListRequest::where('status', 'like', '%atendimento%')->count();
+        $ticketsAttendance = Ticket::where('status', 'like', '%atendimento%')->count();
 
-        $closed = ListRequest::where('status', 'like', '%encerrado%')->count();
+        $ticketsClosed = Ticket::where('status', 'like', '%encerrado%')->count();
 
-        $lastRequests = ListRequest::select('id', 'requester', 'created_at', 'problem', 'branch_line', 'floor', 'department')->orderByDesc('id')->limit(20)->get();
+        $lastRequests = Ticket::select('id', 'requester', 'created_at', 'problem',)->orderByDesc('id')->limit(20)->get();
 
         return view('index', [
             'lastRequests' => $lastRequests,
-            'requestDay' => $requestDay,
-            'requestNew' => $requestNew,
-            'attendance' => $attendance,
-            'closed' => $closed,
-            'requestYear' => $requestYear,
-            'active' => $users_status_on,
-            'inactive' => $users_status_off,
+            'ticketsDay' => $ticketsDay,
+            'ticketsNew' => $ticketsNew,
+            'ticketsAttendance' => $ticketsAttendance,
+            'ticketsClosed' => $ticketsClosed,
+            'ticketsYear' => $ticketsYear,
+            'users_active' => $users_active,
+            'users_inactive' => $users_inactive,
             'totalusers' => $users
         ]);
     }
     public function create()
     {
-        // $departments = ;
+        $departments = Department::select('name', 'floor')->get();
+        if (count($departments) == 0) {
+            return redirect('/departamentos')->with('error', 'Cadastre ao menos 1 departamento!');
+        }
         $user = auth()->user();
-        $users = ListRequest::select('requester')->get();
-        return view('requests.create', ['user' => $user->name, 'users' => $users]);
+        $users = Ticket::select('requester')->get();
+        return view('requests.create', ['user' => $user->name, 'users' => $users, 'departaments' => $departments]);
     }
     public function requests()
     {
-        $listRequests = ListRequest::select('id', 'requester', 'status', 'location', 'problem', 'branch_line', 'floor', 'department')->get();
-        return view('requests.requests', ['listRequests' => $listRequests]);
+        $Tickets = Ticket::select('id', 'requester', 'status', 'location', 'problem', 'branch_line', 'floor', 'department')->get();
+        return view('requests.requests', ['Tickets' => $Tickets]);
     }
     public function show($id)
     {
-        if (RequestController::verifyIsNumber($id)) {
-            $request = ListRequest::findOrFail($id);
-            return view('requests.show', ['request' => $request]);
+        $departments = Department::select('name', 'floor')->get();
+        if (count($departments) == 0) {
+            return redirect('/departamentos')->with('error', 'Cadastre ao menos 1 departamento!');
+        }
+        if (TicketController::verifyIsNumber($id)) {
+            $request = Ticket::findOrFail($id);
+            return view('requests.show', ['request' => $request, 'departaments' => $departments]);
         } else {
             return redirect('/chamados')->with('error', 'Chamado não encontrado!');
         }
@@ -64,7 +72,7 @@ class RequestController extends Controller
     public function myRequests()
     {
         $user = auth()->user();
-        $requests = ListRequest::where('user_id', $user->id)->get();
+        $requests = Ticket::where('user_id', $user->id)->get();
         return view('requests.my-requests', [
             'requests' => $requests
         ]);
@@ -90,7 +98,7 @@ class RequestController extends Controller
     {
 
         $user = auth()->user();
-        $newRequest = new ListRequest();
+        $newRequest = new Ticket();
         $newRequest->created_by = $user->name;
         $newRequest->requester = $request->requester;
         $newRequest->requester_email = $request->requester_email;
@@ -122,17 +130,6 @@ class RequestController extends Controller
             return redirect('/chamados')->with('error', 'Erro na requisição erro:', $th);
         }
     }
-    public function addRequest($id)
-    {
-        if (RequestController::verifyIsNumber($id)) {
-            echo "\"{$id}\" is a number.";
-        } else {
-            echo "\"{$id}\" is not a number.";
-        }
-
-        exit;
-        // return redirect('/meus-chamados')->with('success', 'Chamado adicionado a sua fila!');
-    }
 
     public function update(Request $request)
     {
@@ -151,13 +148,13 @@ class RequestController extends Controller
                 $data['image'] = $imageName;
             }
 
-            $list = ListRequest::findOrFail($request->id);
+            $list = Ticket::findOrFail($request->id);
             $path = 'img/requests/' . $list->image;
             if (file_exists($path)) {
                 unlink($path);
             }
         }
-        ListRequest::findOrFail($request->id)->update($data);
+        Ticket::findOrFail($request->id)->update($data);
         return redirect('/chamados')->with('success', 'Chamado editado com sucesso!');
     }
 

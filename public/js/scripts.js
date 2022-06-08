@@ -89,4 +89,9 @@ $(document).ready(function () {
         const toast = new bootstrap.Toast(toastNewRquest);
         toast.show();
     }
+
+    const modalTutorial = new bootstrap.Modal("#tutorial", {
+        keyboard: false,
+    });
+    // modalTutorial.show();
 });
